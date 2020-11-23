@@ -50,7 +50,11 @@ export default function App() {
               component={TabNavs}
               options={{ headerShown: false }}
             />
-            <Stack.Screen name="Deck" component={Deck} />
+            <Stack.Screen
+              name="Deck"
+              component={Deck}
+              options={{ headerTitle: "" }}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </View>

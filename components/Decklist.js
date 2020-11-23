@@ -11,7 +11,8 @@ import { connect } from "react-redux";
 import { AppLoading } from "expo";
 import { receiveDecks } from "../actions";
 import { fetchDecksResults } from "../utils/api";
-import { white, orange, mudBrown } from "../utils/colors";
+import { white, orange, mudBrown, gray } from "../utils/colors";
+import { CommonActions } from "@react-navigation/native";
 
 class DeckList extends Component {
   state = {
@@ -25,10 +26,15 @@ class DeckList extends Component {
       .then(() => this.setState(() => ({ ready: true })));
   }
 
-  onPressList = () => {
-    // ToDo: navigate to deck view
-    this.props.navigation.navigate("Deck");
-    console.log(this.props.navigation);
+  onPressList = (item) => {
+    this.props.navigation.dispatch(
+      CommonActions.navigate({
+        name: "Deck",
+        params: {
+          deck: item,
+        },
+      })
+    );
   };
 
   renderItem = ({ item }) => {
@@ -41,9 +47,11 @@ class DeckList extends Component {
           borderBottomColor: mudBrown,
         }}
       >
-        <TouchableOpacity onPress={this.onPressList}>
+        <TouchableOpacity onPress={() => this.onPressList(item)}>
           <Text style={styles.title}>{item.title}</Text>
-          <Text style={{ textAlign: "center" }}>{item.totalCards} cards</Text>
+          <Text style={{ textAlign: "center", color: gray, fontSize: 20 }}>
+            {item.totalCards} cards
+          </Text>
         </TouchableOpacity>
       </View>
     );
