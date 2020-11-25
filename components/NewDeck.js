@@ -1,6 +1,17 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import { mudBrown, white } from "../utils/colors";
+import { connect } from "react-redux";
+import { addDeck, handleDeckDispatch } from "../actions";
+import { generateUID } from "../utils/helpers";
+import { submitDeck } from "../utils/api";
+import { CommonActions } from "@react-navigation/native";
 
 function SubmitBtn({ onPress }) {
   return (
@@ -18,15 +29,73 @@ function SubmitBtn({ onPress }) {
 }
 
 class NewDeck extends Component {
-  onSubmit = () => {
-    console.log("button pressed");
-    // manage state in store
-    // redirect to deckView to create cards and start a quiz
+  state = {
+    title: "",
   };
+
+  onSubmit = (event) => {
+    const { decks, dispatch } = this.props;
+    const { title } = this.state;
+    const id = generateUID();
+    const newDeck = {
+      id: id,
+      title: title,
+      totalCards: 0,
+      cards: [],
+    };
+
+    dispatch(
+      addDeck({
+        [id]: newDeck,
+      })
+    );
+
+    this.setState(() => ({ title: "" }));
+
+    // redirect to deckView
+
+    submitDeck({ newDeck, id });
+
+    this.props.navigation.dispatch(
+      CommonActions.navigate({
+        name: "Deck",
+        params: {
+          id: id,
+        },
+      })
+    );
+
+    // console.log(decks);
+  };
+
+  handleChange = (event) => {
+    // onChange - gives access to event
+    // onChangeText - gives each char you enter in input field as a single string
+
+    const { eventCount, target, text } = event.nativeEvent;
+
+    this.setState(() => ({
+      title: text,
+    }));
+  };
+
   render() {
+    const { title } = this.state;
+    const { decks } = this.props;
     return (
       <View style={styles.container}>
-        <Text>What is the title of your new deck?</Text>
+        <Text style={styles.title}>What is the title of your new deck?</Text>
+        <TextInput
+          onChange={this.handleChange}
+          value={title}
+          style={{
+            height: 40,
+            borderColor: "gray",
+            borderWidth: 1,
+            alignSelf: "stretch",
+            marginBottom: 20,
+          }}
+        />
         <SubmitBtn onPress={this.onSubmit} />
       </View>
     );
@@ -36,8 +105,10 @@ class NewDeck extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: "center", // vertically center
+    padding: 20,
+    // justifyContent: "center", // vertically center with default behaviour
     alignItems: "center",
+    justifyContent: "center",
   },
   iosSubmitBtn: {
     backgroundColor: mudBrown,
@@ -63,6 +134,16 @@ const styles = StyleSheet.create({
     fontSize: 22,
     textAlign: "center",
   },
+  title: {
+    fontSize: 32,
+    textAlign: "center",
+    marginBottom: 40,
+  },
 });
 
-export default NewDeck;
+function mapStateToProps(decks) {
+  return {
+    decks,
+  };
+}
+export default connect(mapStateToProps)(NewDeck);
