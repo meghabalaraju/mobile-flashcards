@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet, Platform } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { CommonActions } from "@react-navigation/native";
 import { connect } from "react-redux";
 import { darkOrange, gray, white } from "../utils/colors";
 
@@ -31,7 +30,8 @@ class Deck extends Component {
   };
 
   render() {
-    const { deck } = this.props.route.params;
+    const { deck } = this.props;
+    console.log("deckView", this.props.route.params);
     return (
       <View style={styles.container}>
         <Text style={styles.title}>{deck.title}</Text>
@@ -93,10 +93,12 @@ const styles = StyleSheet.create({
   },
 });
 
-function mapStateToProps(decks) {
+function mapStateToProps(decks, { route }) {
+  const deck = decks[route.params.id];
   return {
     decks,
+    deck,
   };
 }
 
-export default connect()(Deck);
+export default connect(mapStateToProps)(Deck);
