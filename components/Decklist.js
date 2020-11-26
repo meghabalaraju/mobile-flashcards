@@ -1,10 +1,16 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
 import { connect } from "react-redux";
 import { AppLoading } from "expo";
 import { receiveDecks } from "../actions";
 import { fetchDecksResults } from "../utils/api";
-import { white, mudBrown, gray } from "../utils/colors";
+import { white, mudBrown } from "../utils/colors";
 import { CommonActions } from "@react-navigation/native";
 
 class DeckList extends Component {
@@ -16,33 +22,30 @@ class DeckList extends Component {
 
     fetchDecksResults()
       .then((decks) => {
-        console.log(decks);
         dispatch(receiveDecks(decks));
       })
       .then(() => this.setState(() => ({ ready: true })));
   }
 
-  onPressList = (item) => {
+  onPressList = ({ item }) => {
     const { id } = item;
+    console.log("item with obj", item);
     this.props.navigation.dispatch(
       CommonActions.navigate({
         name: "Deck",
         params: {
-          id: id,
+          deck: item,
         },
       })
     );
   };
 
-  renderItem = (item) => {
-    console.log("item in decklit", item);
+  renderItem = ({ item }) => {
     return (
-      <View style={styles.listStyle}>
-        <TouchableOpacity onPress={() => this.onPressList(item)}>
+      <View style={styles.card}>
+        <TouchableOpacity onPress={() => this.onPressList({ item })}>
           <Text style={styles.title}>{item.title}</Text>
-          <Text style={{ textAlign: "center", color: gray, fontSize: 20 }}>
-            {item.totalCards} cards
-          </Text>
+          <Text style={{ textAlign: "center" }}>{item.totalCards} cards</Text>
         </TouchableOpacity>
       </View>
     );
@@ -51,23 +54,30 @@ class DeckList extends Component {
   render() {
     const { ready } = this.state;
     const { decks } = this.props;
-    const deckIds = Object.keys(decks);
 
     if (ready === false) {
       return <AppLoading />;
     }
+
     return (
       <View style={{ flex: 1 }}>
-        {deckIds.map((id, index) => (
-          <View key={index}>{this.renderItem(decks[id])}</View>
-        ))}
-        <Text>{JSON.stringify(decks)} </Text>
+        <FlatList
+          data={decks}
+          renderItem={this.renderItem}
+          keyExtractor={(item, index) => index.toString()}
+        />
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  card: {
+    backgroundColor: white,
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: mudBrown,
+  },
   listStyle: {
     backgroundColor: white,
     padding: 20,
