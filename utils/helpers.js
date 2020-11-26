@@ -9,8 +9,8 @@ export function generateUID() {
 }
 
 function setDummyData() {
-  let dummyData = {
-    "6ni6ok3ym7mf1p33lnez": {
+  let dummyData = [
+    {
       id: "6ni6ok3ym7mf1p33lnez",
       title: "React Native deck",
       totalCards: 3,
@@ -29,13 +29,13 @@ function setDummyData() {
         },
       ],
     },
-    "8xf0y6ziyjabvozdd253nd": {
+    {
       id: "8xf0y6ziyjabvozdd253nd",
       title: "React deck",
       totalCards: 0,
       cards: [],
     },
-  };
+  ];
 
   AsyncStorage.setItem(DECK_STORAGE_KEY, JSON.stringify(dummyData));
 

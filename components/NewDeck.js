@@ -33,8 +33,8 @@ class NewDeck extends Component {
     title: "",
   };
 
-  onSubmit = (event) => {
-    const { decks, dispatch } = this.props;
+  onSubmit = () => {
+    const { dispatch } = this.props;
     const { title } = this.state;
     const id = generateUID();
     const newDeck = {
@@ -44,23 +44,21 @@ class NewDeck extends Component {
       cards: [],
     };
 
-    dispatch(
-      addDeck({
-        [id]: newDeck,
-      })
-    );
+    dispatch(addDeck(newDeck));
 
     this.setState(() => ({ title: "" }));
 
     // redirect to deckView
 
-    submitDeck({ newDeck, id });
+    submitDeck(newDeck);
+
+    console.log("added deck", newDeck);
 
     this.props.navigation.dispatch(
       CommonActions.navigate({
         name: "Deck",
         params: {
-          id: id,
+          deck: newDeck,
         },
       })
     );
@@ -81,20 +79,13 @@ class NewDeck extends Component {
 
   render() {
     const { title } = this.state;
-    const { decks } = this.props;
     return (
       <View style={styles.container}>
         <Text style={styles.title}>What is the title of your new deck?</Text>
         <TextInput
           onChange={this.handleChange}
           value={title}
-          style={{
-            height: 40,
-            borderColor: "gray",
-            borderWidth: 1,
-            alignSelf: "stretch",
-            marginBottom: 20,
-          }}
+          style={styles.textInput}
         />
         <SubmitBtn onPress={this.onSubmit} />
       </View>
@@ -138,6 +129,13 @@ const styles = StyleSheet.create({
     fontSize: 32,
     textAlign: "center",
     marginBottom: 40,
+  },
+  textInput: {
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    alignSelf: "stretch",
+    marginBottom: 20,
   },
 });
 
