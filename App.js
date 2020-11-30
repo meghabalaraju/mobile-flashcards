@@ -14,6 +14,7 @@ import reducer from "./reducers";
 import DeckList from "./components/Decklist";
 import Deck from "./components/Deck";
 import NewDeck from "./components/NewDeck";
+import NewCard from "./components/NewCard";
 
 function MFStatusBar({ backgroundColor, ...props }) {
   return (
@@ -55,6 +56,7 @@ export default function App() {
               component={Deck}
               options={{ headerTitle: "" }}
             />
+            <Stack.Screen name="AddCard" component={NewCard} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>

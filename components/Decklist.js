@@ -29,12 +29,12 @@ class DeckList extends Component {
 
   onPressList = ({ item }) => {
     const { id } = item;
-    console.log("item with obj", item);
+
     this.props.navigation.dispatch(
       CommonActions.navigate({
         name: "Deck",
         params: {
-          deck: item,
+          id,
         },
       })
     );
@@ -45,7 +45,7 @@ class DeckList extends Component {
       <View style={styles.card}>
         <TouchableOpacity onPress={() => this.onPressList({ item })}>
           <Text style={styles.title}>{item.title}</Text>
-          <Text style={{ textAlign: "center" }}>{item.totalCards} cards</Text>
+          <Text style={{ textAlign: "center" }}>{item.cards.length} cards</Text>
         </TouchableOpacity>
       </View>
     );

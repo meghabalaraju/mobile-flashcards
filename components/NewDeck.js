@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { mudBrown, white } from "../utils/colors";
 import { connect } from "react-redux";
-import { addDeck, handleDeckDispatch } from "../actions";
+import { addDeck } from "../actions";
 import { generateUID } from "../utils/helpers";
 import { submitDeck } from "../utils/api";
 import { CommonActions } from "@react-navigation/native";
@@ -48,22 +48,17 @@ class NewDeck extends Component {
 
     this.setState(() => ({ title: "" }));
 
-    // redirect to deckView
-
     submitDeck(newDeck);
-
-    console.log("added deck", newDeck);
 
     this.props.navigation.dispatch(
       CommonActions.navigate({
         name: "Deck",
         params: {
           deck: newDeck,
+          id: id,
         },
       })
     );
-
-    // console.log(decks);
   };
 
   handleChange = (event) => {
@@ -116,7 +111,6 @@ const styles = StyleSheet.create({
     paddingRight: 30,
     borderRadius: 2,
     height: 45,
-    // alignSelf: "center",
     justifyContent: "center",
     alignItems: "center",
   },

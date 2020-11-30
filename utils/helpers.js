@@ -13,7 +13,6 @@ function setDummyData() {
     {
       id: "6ni6ok3ym7mf1p33lnez",
       title: "React Native deck",
-      totalCards: 3,
       cards: [
         {
           questionText: "Does React Native work with Android?",
@@ -32,7 +31,6 @@ function setDummyData() {
     {
       id: "8xf0y6ziyjabvozdd253nd",
       title: "React deck",
-      totalCards: 0,
       cards: [],
     },
   ];
@@ -44,10 +42,5 @@ function setDummyData() {
 
 // Since localstorage needs to be cleared before loading second time this app, we are just assigning back the stored already results
 export function formatDecksResults(results) {
-  console.log(results);
-  return results === null || "undefined"
-    ? setDummyData()
-    : typeof results === "undefined"
-    ? setDummyData()
-    : results;
+  return setDummyData();
 }
