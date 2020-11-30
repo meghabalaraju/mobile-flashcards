@@ -4,7 +4,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { connect } from "react-redux";
 import { removeDeck } from "../actions";
 import { darkOrange, gray, white, purple } from "../utils/colors";
-import { removeDeckEntry } from "../utils/api";
+import { fetchDecksResults, removeDeckEntry } from "../utils/api";
 import { CommonActions } from "@react-navigation/native";
 
 function FillButton({ onPress }) {
@@ -33,7 +33,16 @@ function TextButton({ children, onPress, style = {} }) {
 
 class Deck extends Component {
   addCard = () => {
-    console.log("new cad will be added");
+    const { deck } = this.props;
+
+    this.props.navigation.dispatch(
+      CommonActions.navigate({
+        name: "AddCard",
+        params: {
+          id: deck.id,
+        },
+      })
+    );
   };
 
   startQuiz = () => {
@@ -41,20 +50,19 @@ class Deck extends Component {
   };
 
   deleteDeck = () => {
-    const { remove, toHome } = this.props;
-    const { deck } = this.props.route.params;
-    remove();
+    const { deck, toHome } = this.props;
+
+    dispatch(removeDeck(deck.id));
     toHome();
     removeDeckEntry(deck.id);
   };
 
   render() {
     const { deck } = this.props;
-
     return (
       <View style={styles.container}>
         <Text style={styles.title}>{deck.title}</Text>
-        <Text style={styles.text}>{deck.totalCards} cards</Text>
+        <Text style={styles.text}>{deck.cards.length} cards</Text>
         <FillButton onPress={this.addCard} />
         <OutlineButton onPress={this.startQuiz} />
         <TextButton onPress={this.deleteDeck}>Delete Deck</TextButton>
@@ -118,18 +126,15 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(decks, { route }) {
-  const { deck } = route.params;
+  const deck = decks.find(({ id }) => id === route.params.id);
   return {
     decks,
     deck,
   };
 }
 
-function mapDispatchToProps(dispatch, { navigation, route }) {
-  const { deck } = route.params;
-
+function mapDispatchToProps(dispatch, { navigation }) {
   return {
-    remove: () => dispatch(removeDeck(deck.id)),
     toHome: () => navigation.navigate("Decks"),
   };
 }
