@@ -15,6 +15,7 @@ import DeckList from "./components/Decklist";
 import Deck from "./components/Deck";
 import NewDeck from "./components/NewDeck";
 import NewCard from "./components/NewCard";
+import Quiz from "./components/Quiz";
 
 function MFStatusBar({ backgroundColor, ...props }) {
   return (
@@ -57,6 +58,7 @@ export default function App() {
               options={{ headerTitle: "" }}
             />
             <Stack.Screen name="AddCard" component={NewCard} />
+            <Stack.Screen name="Quiz" component={Quiz} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>

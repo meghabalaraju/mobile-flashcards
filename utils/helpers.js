@@ -27,11 +27,13 @@ function setDummyData() {
           answerText: "yes",
         },
       ],
+      quizTaken: 0,
     },
     {
       id: "8xf0y6ziyjabvozdd253nd",
       title: "React deck",
       cards: [],
+      quizTaken: 0,
     },
   ];
 

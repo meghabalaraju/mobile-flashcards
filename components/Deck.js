@@ -26,7 +26,7 @@ function OutlineButton({ onPress }) {
 function TextButton({ children, onPress, style = {} }) {
   return (
     <TouchableOpacity onPress={onPress}>
-      <Text style={[styles.reset, style]}>{children}</Text>
+      <Text style={style}>{children}</Text>
     </TouchableOpacity>
   );
 }
@@ -47,6 +47,16 @@ class Deck extends Component {
 
   startQuiz = () => {
     console.log("quiz will start soon");
+    const { deck } = this.props;
+
+    this.props.navigation.dispatch(
+      CommonActions.navigate({
+        name: "Quiz",
+        params: {
+          id: deck.id,
+        },
+      })
+    );
   };
 
   deleteDeck = () => {
