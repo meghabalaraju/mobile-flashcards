@@ -35,40 +35,29 @@ class Deck extends Component {
   addCard = () => {
     const { deck } = this.props;
 
-    this.props.navigation.dispatch(
-      CommonActions.navigate({
-        name: "AddCard",
-        params: {
-          id: deck.id,
-        },
-      })
-    );
+    this.props.navigation.navigate("AddCard", {
+      id: deck.id,
+    });
   };
 
   startQuiz = () => {
     console.log("quiz will start soon");
     const { deck } = this.props;
 
-    this.props.navigation.dispatch(
-      CommonActions.navigate({
-        name: "Quiz",
-        params: {
-          id: deck.id,
-        },
-      })
-    );
+    this.props.navigation.navigate("Quiz", {
+      id: deck.id,
+    });
   };
 
   deleteDeck = (id) => {
     const { dispatch } = this.props;
     dispatch(removeDeck(id));
-    this.props.navigation.dispatch(CommonActions.goBack());
+    this.props.navigation.navigate("Decks");
     removeDeckEntry(id);
   };
 
   render() {
-    const { decks } = this.props;
-    const deck = decks.find(({ id }) => id === this.props.route.params.id);
+    const { deck } = this.props;
     return (
       <View style={styles.container}>
         <Text style={styles.title}>{deck.title}</Text>
@@ -138,8 +127,10 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(decks, { route }) {
+  const deck = decks.find(({ id }) => id === route.params.id);
   return {
     decks,
+    deck,
   };
 }
 

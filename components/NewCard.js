@@ -45,6 +45,7 @@ class NewCard extends Component {
     const { id } = this.props.route.params;
 
     const card = { questionText: question, answerText: answer };
+    console.log("new card", id, card);
 
     dispatch(addCard(id, card));
     this.props.navigation.dispatch(CommonActions.goBack());
