@@ -21,6 +21,7 @@ export function removeDeckEntry(id) {
   return AsyncStorage.getItem(DECK_STORAGE_KEY).then((results) => {
     const data = JSON.parse(results);
     const decks = data.filter((value) => value.id !== id);
+    AsyncStorage.removeItem(DECK_STORAGE_KEY);
     AsyncStorage.setItem(DECK_STORAGE_KEY, JSON.stringify(decks));
   });
 }

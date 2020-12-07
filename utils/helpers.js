@@ -44,5 +44,9 @@ function setDummyData() {
 
 // Since localstorage needs to be cleared before loading second time this app, we are just assigning back the stored already results
 export function formatDecksResults(results) {
-  return setDummyData();
+  if (results === null || "undefined") {
+    return setDummyData();
+  } else {
+    return results;
+  }
 }

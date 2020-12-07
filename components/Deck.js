@@ -59,23 +59,25 @@ class Deck extends Component {
     );
   };
 
-  deleteDeck = () => {
-    const { deck, toHome } = this.props;
-
-    dispatch(removeDeck(deck.id));
-    toHome();
-    removeDeckEntry(deck.id);
+  deleteDeck = (id) => {
+    const { dispatch } = this.props;
+    dispatch(removeDeck(id));
+    this.props.navigation.dispatch(CommonActions.goBack());
+    removeDeckEntry(id);
   };
 
   render() {
-    const { deck } = this.props;
+    const { decks } = this.props;
+    const deck = decks.find(({ id }) => id === this.props.route.params.id);
     return (
       <View style={styles.container}>
         <Text style={styles.title}>{deck.title}</Text>
         <Text style={styles.text}>{deck.cards.length} cards</Text>
         <FillButton onPress={this.addCard} />
         <OutlineButton onPress={this.startQuiz} />
-        <TextButton onPress={this.deleteDeck}>Delete Deck</TextButton>
+        <TextButton onPress={() => this.deleteDeck(deck.id)}>
+          Delete Deck
+        </TextButton>
       </View>
     );
   }
@@ -136,17 +138,9 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(decks, { route }) {
-  const deck = decks.find(({ id }) => id === route.params.id);
   return {
     decks,
-    deck,
   };
 }
 
-function mapDispatchToProps(dispatch, { navigation }) {
-  return {
-    toHome: () => navigation.navigate("Decks"),
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Deck);
+export default connect(mapStateToProps)(Deck);

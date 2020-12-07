@@ -8,14 +8,19 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import { AppLoading } from "expo";
-import { receiveDecks } from "../actions";
-import { fetchDecksResults } from "../utils/api";
+import { receiveDecks, removeDeck } from "../actions";
 import { white, mudBrown } from "../utils/colors";
 import { CommonActions } from "@react-navigation/native";
+import { fetchDecksResults } from "../utils/api";
 
 class DeckList extends Component {
   state = {
     ready: false,
+  };
+
+  removeDeck = (id) => {
+    const { dispatch } = this.props;
+    dispatch(removeDeck(id));
   };
   componentDidMount() {
     const { dispatch } = this.props;
@@ -35,6 +40,7 @@ class DeckList extends Component {
         name: "Deck",
         params: {
           id,
+          removeDeck: removeDeck(id),
         },
       })
     );
@@ -58,14 +64,15 @@ class DeckList extends Component {
     if (ready === false) {
       return <AppLoading />;
     }
-
     return (
       <View style={{ flex: 1 }}>
-        <FlatList
-          data={decks}
-          renderItem={this.renderItem}
-          keyExtractor={(item, index) => index.toString()}
-        />
+        {decks && (
+          <FlatList
+            data={decks}
+            renderItem={this.renderItem}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        )}
       </View>
     );
   }
@@ -91,7 +98,7 @@ const styles = StyleSheet.create({
 });
 function mapStateToProps(decks) {
   return {
-    decks,
+    decks: decks,
   };
 }
 
