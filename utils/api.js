@@ -1,12 +1,16 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { DECK_STORAGE_KEY, formatDecksResults } from "./helpers";
+import { formatDecksResults } from "./helpers";
+export const DECK_STORAGE_KEY = "MobileFlashCards:decks";
 
-export function fetchDecksResults() {
-  return AsyncStorage.getItem(DECK_STORAGE_KEY)
-    .then(formatDecksResults)
-    .then((reults) => {
-      return reults;
-    });
+export async function fetchDecksResults() {
+  try {
+    const storeResults = await AsyncStorage.getItem(DECK_STORAGE_KEY).then(
+      formatDecksResults
+    );
+    return storeResults;
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 export function submitDeck(deck) {
