@@ -10,8 +10,9 @@ import { Provider } from "react-redux";
 import reducer from "./reducers";
 import thunk from "redux-thunk";
 import DeckList from "./components/DeckList";
+import DeckDetails from "./components/DeckDetails";
 // import Deck from "./components/Deck";
-// import NewDeck from "./components/NewDeck";
+import NewDeck from "./components/NewDeck";
 // import NewCard from "./components/NewCard";
 // import Quiz from "./components/Quiz";
 // import ansCard from "./components/ansCard";
@@ -24,7 +25,7 @@ function TabNavs() {
   return (
     <Tab.Navigator>
       <Tab.Screen name="Decks" component={DeckList} />
-      {/* <Tab.Screen name="Add decks" component={NewDeck} /> */}
+      <Tab.Screen name="Add decks" component={NewDeck} />
     </Tab.Navigator>
   );
 }
@@ -46,12 +47,12 @@ export default function App() {
               component={TabNavs}
               options={{ headerShown: false }}
             />
-            {/* <Stack.Screen
-              name="Deck"
-              component={Deck}
+            <Stack.Screen
+              name="DeckDetails"
+              component={DeckDetails}
               options={{ headerTitle: "" }}
             />
-            <Stack.Screen name="AddCard" component={NewCard} />
+            {/* <Stack.Screen name="AddCard" component={NewCard} />
             <Stack.Screen name="Quiz" component={Quiz} />
             <Stack.Screen
               name="AnswerCard"

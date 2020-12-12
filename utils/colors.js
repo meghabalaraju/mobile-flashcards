@@ -10,3 +10,4 @@ export const lightPurp = "#7c53c3";
 export const pink = "#b93fb3";
 export const mudBrown = "#92817a";
 export const darkOrange = "#f5a25d";
+export const lightBlue = "#3575d3";
