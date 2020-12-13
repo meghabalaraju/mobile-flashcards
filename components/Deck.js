@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { connect } from "react-redux";
+
+// imports colors utils
 import { white, gray } from "../utils/colors";
 
 class Deck extends Component {
@@ -8,12 +10,8 @@ class Deck extends Component {
     const { deck } = this.props;
     return (
       <View style={styles.card}>
-        <View>
-          <Text style={styles.title}>{deck.title}</Text>
-        </View>
-        <View>
-          <Text style={styles.cards}>{deck.cards.length} cards</Text>
-        </View>
+        <Text style={styles.title}>{deck.title}</Text>
+        <Text style={styles.cards}>{deck.cards.length} cards</Text>
       </View>
     );
   }
@@ -21,27 +19,29 @@ class Deck extends Component {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: white,
-    borderRadius: 2,
-    padding: 12,
-    marginBottom: 25,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "black",
+    backgroundColor: white,
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#cfd3ce",
   },
   cards: {
-    fontSize: 18,
-    paddingLeft: 20,
+    fontSize: 16,
     color: gray,
   },
   title: {
-    fontSize: 24,
-    marginBottom: 10,
+    fontSize: 22,
+    marginBottom: 5,
   },
 });
 
+/**
+ * Fetching all decks from store to retrieve the deck needed for component
+ * @param {object} decks - all decks from store
+ * @param {string} deckId - individual deck id
+ */
 const mapStateToProps = (decks, { deckId }) => {
-  console.log("deck list", decks, deckId);
   const deck = decks[deckId];
 
   return {

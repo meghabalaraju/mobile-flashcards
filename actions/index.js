@@ -35,10 +35,10 @@ export function addCard(deckId, card) {
   };
 }
 
-export function handleInitialData() {
-  return (dispatch) => {
-    return fetchDecksResults().then((decks) => {
-      dispatch(receiveDecks(decks));
-    });
-  };
-}
+// export function handleInitialData() {
+//   return (dispatch) => {
+//     return fetchDecksResults().then((decks) => {
+//       dispatch(receiveDecks(decks));
+//     });
+//   };
+// }

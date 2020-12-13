@@ -1,37 +1,53 @@
 import React, { Component } from "react";
 import {
-  View,
-  Text,
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
 import { connect } from "react-redux";
-import { handleInitialData } from "../actions";
+
+// imports expo packages
+import { AppLoading } from "expo";
+
+//imports actions
+import { receiveDecks } from "../actions";
+
+// api imports
+import { fetchDecksResults } from "../utils/api";
+
+// imports components
 import Deck from "./Deck";
-import { white, gray, orange } from "../utils/colors";
 
 class DeckList extends Component {
   state = {
     isReady: false,
   };
 
+  // Fetch initial data - all decks' object and shown splash screen when data is loading
   componentDidMount() {
-    this.props.dispatch(handleInitialData());
+    const { dispatch } = this.props;
+    fetchDecksResults()
+      .then((decks) => dispatch(receiveDecks(decks)))
+      .then(() => this.setState({ ready: true }));
   }
 
   render() {
     const { decks, navigation, decksKeys } = this.props;
+    const { ready } = this.state;
+
+    if (ready === false) {
+      return <AppLoading />;
+    }
+
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView>
-          <Text style={styles.title}>Mobile Flashcards</Text>
           {decks &&
             decksKeys.map((key, index) => (
               <TouchableOpacity
                 key={index}
-                onPress={() => navigation.navigate("DeckDetails", { id: key })}
+                onPress={() => navigation.navigate("Deck details", { id: key })}
               >
                 <Deck deckId={key} />
               </TouchableOpacity>
@@ -45,19 +61,16 @@ class DeckList extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#e5e5e5",
-    alignItems: "center",
-    padding: 30,
-  },
-  title: {
-    fontSize: 40,
-    textAlign: "center",
-    marginBottom: 20,
-    color: orange,
+    paddingTop: 1,
   },
 });
 
-function mapStateToProps(decks) {
+/**
+ * fetching all decks' object from store
+ * extracting key from key:value paur in decks' object - decksKeys (will be passed to Deck component)
+ * @param {object} decks
+ */
+const mapStateToProps = (decks) => {
   const decksKeys = decks
     ? Object.keys(decks).map((key, index) => {
         return key;
@@ -68,6 +81,6 @@ function mapStateToProps(decks) {
     decks,
     decksKeys,
   };
-}
+};
 
 export default connect(mapStateToProps)(DeckList);
