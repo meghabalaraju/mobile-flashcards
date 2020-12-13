@@ -18,6 +18,7 @@ import { fetchDecksResults } from "../utils/api";
 
 // imports components
 import Deck from "./Deck";
+import { white } from "../utils/colors";
 
 class DeckList extends Component {
   state = {
@@ -49,7 +50,7 @@ class DeckList extends Component {
                 key={index}
                 onPress={() => navigation.navigate("Deck details", { id: key })}
               >
-                <Deck deckId={key} />
+                <Deck deckId={key} style={styles.deckCard} />
               </TouchableOpacity>
             ))}
         </ScrollView>
@@ -62,6 +63,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 1,
+  },
+  deckCard: {
+    borderBottomWidth: 1,
+    backgroundColor: white,
   },
 });
 

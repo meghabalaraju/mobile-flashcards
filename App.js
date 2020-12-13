@@ -15,6 +15,7 @@ import reducer from "./reducers";
 import DeckList from "./components/DeckList";
 import DeckDetails from "./components/DeckDetails";
 import NewDeck from "./components/NewDeck";
+import NewCard from "./components/NewCard";
 
 // imports utils
 import {
@@ -78,8 +79,8 @@ export default function App() {
                 headerTintColor: "#045762",
               }}
             />
-            {/* <Stack.Screen name="AddCard" component={NewCard} />
-            <Stack.Screen name="Quiz" component={Quiz} />
+            <Stack.Screen name="Add Card" component={NewCard} />
+            {/* <Stack.Screen name="Quiz" component={Quiz} />
             <Stack.Screen
               name="AnswerCard"
               component={ansCard}

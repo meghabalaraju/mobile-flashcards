@@ -1,43 +1,42 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { formatDecksResults } from "./helpers";
-export const DECK_STORAGE_KEY = "MobileFlashCards:decks";
+import { DECK_STORAGE_KEY } from "./helpers";
 
+/**
+ * Intial dummy data sets up
+ */
 export async function fetchDecksResults() {
   try {
     const storeResults = await AsyncStorage.getItem(DECK_STORAGE_KEY).then(
       formatDecksResults
     );
-    return storeResults;
+    return JSON.parse(storeResults);
   } catch (err) {
     console.log(err);
   }
 }
 
-export function submitDeck(deck) {
-  return AsyncStorage.getItem(DECK_STORAGE_KEY).then((results) => {
-    const data = JSON.parse(results);
-    const decks = data.concat([deck]);
-    AsyncStorage.setItem(DECK_STORAGE_KEY, JSON.stringify(decks));
-  });
-}
-
-export function removeDeckEntry(id) {
-  return AsyncStorage.getItem(DECK_STORAGE_KEY).then((results) => {
-    const data = JSON.parse(results);
-    const decks = data.filter((value) => value.id !== id);
-    AsyncStorage.removeItem(DECK_STORAGE_KEY);
-    AsyncStorage.setItem(DECK_STORAGE_KEY, JSON.stringify(decks));
-  });
-}
-
-export function addCardEntry(id, card) {
-  return AsyncStorage.getItem(DECK_STORAGE_KEY).then((results) => {
-    const data = JSON.parse(results);
-    const decks = data.map((deck) =>
-      deck.id !== id
-        ? deck
-        : Object.assign({}, deck, { cards: deck.cards.concat([card]) })
+/**
+ * merges new input card into exisitng cards array in deck
+ * @param {string} id - deck id
+ * @param {object} card - contains question and answer
+ */
+export async function addCardEntry(id, card) {
+  try {
+    const fetchDeck = await AsyncStorage.getItem(DECK_STORAGE_KEY).then(
+      (results) => {
+        const data = JSON.parse(results);
+        const deck = data[id];
+        deck.cards.push(card);
+        return deck;
+      }
     );
-    AsyncStorage.setItem(DECK_STORAGE_KEY, JSON.stringify(decks));
-  });
+
+    await AsyncStorage.mergeItem(
+      DECK_STORAGE_KEY,
+      JSON.stringify({ [id]: fetchDeck })
+    );
+  } catch (e) {
+    console.warn(e);
+  }
 }

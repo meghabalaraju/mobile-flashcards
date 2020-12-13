@@ -1,6 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-export const DECK_STORAGE_KEY = "SET_KEY";
+export const DECK_STORAGE_KEY = "MobileFlashCards:decks";
 
+/**
+ * Generates random id as requied for the deck id
+ */
 export function generateUID() {
   return (
     Math.random().toString(36).substring(2, 15) +
@@ -8,7 +11,10 @@ export function generateUID() {
   );
 }
 
-function setDummyData() {
+/**
+ * Sets dummy data in local storage
+ */
+async function setDummyData() {
   let dummyData = {
     "6ni6ok3ym7mf1p33lnez": {
       id: "6ni6ok3ym7mf1p33lnez",
@@ -37,14 +43,19 @@ function setDummyData() {
     },
   };
 
-  AsyncStorage.setItem(DECK_STORAGE_KEY, JSON.stringify(dummyData));
-
-  return dummyData;
+  return await AsyncStorage.setItem(
+    DECK_STORAGE_KEY,
+    JSON.stringify(dummyData)
+  ).then(() => {
+    return AsyncStorage.getItem(DECK_STORAGE_KEY).then((result) => {
+      return result;
+    });
+  });
 }
 
-// Since localstorage needs to be cleared before loading second time this app, we are just assigning back the stored already results
+// For initial setup, if user has already ran this app on a device then results from local storage returned else assigns dummy data
 export function formatDecksResults(results) {
-  if (results === null || "undefined") {
+  if (results === null) {
     return setDummyData();
   } else {
     return results;

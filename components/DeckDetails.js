@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 
 // utils import
 import { btnColor, gray, white } from "../utils/colors";
+import Deck from "./Deck";
 
 // component imports
 import FillButton from "./UIComponents/FillBtn";
@@ -17,16 +18,22 @@ class DeckDetails extends Component {
     navigation.setOptions({ title: deck.title });
   }
 
+  addCard = () => {
+    const { navigation, deck } = this.props;
+    navigation.navigate("Add Card", { id: deck.id });
+  };
+
   render() {
     const { deck } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.details}>
-          <Text style={styles.title}>{deck.title}</Text>
-          <Text style={styles.card}>{deck.cards.length} cards</Text>
+          <Deck deckId={deck.id} />
         </View>
         <View>
-          <FillButton style={styles.addCardBtn}>Add card</FillButton>
+          <FillButton style={styles.addCardBtn} onPress={this.addCard}>
+            Add card
+          </FillButton>
           <OutlineButton style={styles.startQuizBtn}>Start Quiz</OutlineButton>
           <TextButton style={styles.textBtn}>Delete Deck</TextButton>
         </View>
@@ -66,8 +73,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapSateToProps = (dekcs, { route }) => {
-  const deck = dekcs[route.params.id];
+const mapSateToProps = (decks, { route }) => {
+  const deck = decks[route.params.id];
   return {
     deck,
   };

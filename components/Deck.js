@@ -7,11 +7,13 @@ import { white, gray } from "../utils/colors";
 
 class Deck extends Component {
   render() {
-    const { deck } = this.props;
+    const { deck, style } = this.props;
     return (
-      <View style={styles.card}>
+      <View style={[styles.card, style]}>
         <Text style={styles.title}>{deck.title}</Text>
-        <Text style={styles.cards}>{deck.cards.length} cards</Text>
+        {deck.cards && (
+          <Text style={styles.cards}>{deck.cards.length} cards</Text>
+        )}
       </View>
     );
   }
@@ -21,9 +23,7 @@ const styles = StyleSheet.create({
   card: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: white,
     padding: 10,
-    borderBottomWidth: 1,
     borderBottomColor: "#cfd3ce",
   },
   cards: {

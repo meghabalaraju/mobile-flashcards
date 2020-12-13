@@ -15,11 +15,13 @@ export default function decks(state = {}, action) {
       return state.filter((deck) => deck.id !== action.id);
 
     case ADD_CARD:
-      return state.map((deck) =>
-        deck.id !== action.deckId
-          ? deck
-          : Object.assign({}, deck, { cards: deck.cards.concat([action.card]) })
-      );
+      return {
+        ...state,
+        [action.deckId]: {
+          ...state[action.deckId],
+          cards: [...state[action.deckId].cards].concat(action.card),
+        },
+      };
 
     default:
       return state;
