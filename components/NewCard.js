@@ -1,5 +1,6 @@
+// imports ackages and dependencies
 import React, { Component } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { connect } from "react-redux";
 
@@ -8,8 +9,7 @@ import FillButton from "./UIComponents/FillBtn";
 
 // Imports utils
 import { white } from "../utils/colors";
-import { addCard } from "../actions";
-import { addCardEntry } from "../utils/api";
+import { handleAddCard } from "../actions";
 
 class NewCard extends Component {
   state = {
@@ -17,20 +17,30 @@ class NewCard extends Component {
     answer: "",
   };
 
+  /**
+   * to change respective input's value to state
+   * @param {string} text - user input value
+   * @param {string} inputName - user input values' label
+   */
   handleChange = (text, inputName) => {
     this.setState(() => ({
       [inputName]: text,
     }));
   };
 
+  // handles submission of inputs
   onSubmit = () => {
     const { question, answer } = this.state;
     const { dispatch, navigation, deck } = this.props;
     const card = { questionText: question, answerText: answer };
 
-    dispatch(addCard(deck.id, card));
-    navigation.navigate("Deck details", { id: deck.id });
-    addCardEntry(deck.id, card);
+    // dispatch action to add a card to deck async
+    dispatch(handleAddCard(deck.id, card));
+
+    //  and navigate back to current deck details
+    navigation.navigate("Deck details", {
+      deckProp: { ...deck, cards: [...deck.cards].concat([card]) },
+    });
   };
   render() {
     const { question, answer } = this.state;

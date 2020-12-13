@@ -1,15 +1,18 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 
 // utils import
 import { btnColor, gray, white } from "../utils/colors";
-import Deck from "./Deck";
+
+// imports actions
+import { handleDeleteData } from "../actions";
 
 // component imports
 import FillButton from "./UIComponents/FillBtn";
 import OutlineButton from "./UIComponents/OutlineTextBtn";
 import TextButton from "./UIComponents/TextButton";
+import Deck from "./Deck";
 
 class DeckDetails extends Component {
   // set header title to deck title
@@ -18,24 +21,38 @@ class DeckDetails extends Component {
     navigation.setOptions({ title: deck.title });
   }
 
+  // navigate to "Add Cards" screen to get user inputs
   addCard = () => {
     const { navigation, deck } = this.props;
     navigation.navigate("Add Card", { id: deck.id });
   };
 
+  // to delete the current deck
+  deleteDeck = () => {
+    const { dispatch, navigation, route } = this.props;
+
+    // disptach async action to delete deck
+    dispatch(handleDeleteData(route.params.deckProp.id));
+
+    // naviagte back to decks list
+    navigation.navigate("Decks");
+  };
+
   render() {
-    const { deck } = this.props;
+    const { route } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.details}>
-          <Deck deckId={deck.id} />
+          <Deck deckProp={route.params.deckProp} />
         </View>
         <View>
           <FillButton style={styles.addCardBtn} onPress={this.addCard}>
             Add card
           </FillButton>
           <OutlineButton style={styles.startQuizBtn}>Start Quiz</OutlineButton>
-          <TextButton style={styles.textBtn}>Delete Deck</TextButton>
+          <TextButton style={styles.textBtn} onPress={this.deleteDeck}>
+            Delete Deck
+          </TextButton>
         </View>
       </View>
     );
@@ -74,7 +91,7 @@ const styles = StyleSheet.create({
 });
 
 const mapSateToProps = (decks, { route }) => {
-  const deck = decks[route.params.id];
+  const deck = route.params.id ? decks[route.params.id] : route.params.deckProp;
   return {
     deck,
   };

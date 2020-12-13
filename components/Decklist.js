@@ -48,9 +48,18 @@ class DeckList extends Component {
             decksKeys.map((key, index) => (
               <TouchableOpacity
                 key={index}
-                onPress={() => navigation.navigate("Deck details", { id: key })}
+                onPress={() =>
+                  navigation.navigate("Deck details", {
+                    id: key,
+                    deckProp: decks[key],
+                  })
+                }
               >
-                <Deck deckId={key} style={styles.deckCard} />
+                <Deck
+                  deckId={key}
+                  deckProp={decks[key]}
+                  style={styles.deckCard}
+                />
               </TouchableOpacity>
             ))}
         </ScrollView>

@@ -8,6 +8,10 @@ import { white, gray } from "../utils/colors";
 class Deck extends Component {
   render() {
     const { deck, style } = this.props;
+
+    if (deck === undefined) {
+      return <View style={styles.deckContainer}></View>;
+    }
     return (
       <View style={[styles.card, style]}>
         <Text style={styles.title}>{deck.title}</Text>
@@ -20,6 +24,17 @@ class Deck extends Component {
 }
 
 const styles = StyleSheet.create({
+  deckContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    flexBasis: 120,
+    minHeight: 120,
+    borderWidth: 1,
+    borderColor: "#aaa",
+    backgroundColor: white,
+    borderRadius: 5,
+    marginBottom: 10,
+  },
   card: {
     justifyContent: "center",
     alignItems: "center",
@@ -41,9 +56,8 @@ const styles = StyleSheet.create({
  * @param {object} decks - all decks from store
  * @param {string} deckId - individual deck id
  */
-const mapStateToProps = (decks, { deckId }) => {
-  const deck = decks[deckId];
-
+const mapStateToProps = (decks, { deckId, deckProp }) => {
+  const deck = deckId ? decks[deckId] : deckProp;
   return {
     deck,
   };
