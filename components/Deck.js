@@ -1,142 +1,66 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { connect } from "react-redux";
-import { removeDeck } from "../actions";
-import { darkOrange, gray, white, purple } from "../utils/colors";
-import { fetchDecksResults, removeDeckEntry } from "../utils/api";
-import { CommonActions } from "@react-navigation/native";
 
-function FillButton({ onPress }) {
-  return (
-    <TouchableOpacity onPress={onPress} style={styles.fillButton}>
-      <Text style={styles.fillBtnText}>Add Card</Text>
-    </TouchableOpacity>
-  );
-}
-
-function OutlineButton({ onPress }) {
-  return (
-    <TouchableOpacity onPress={onPress} style={styles.outlineButton}>
-      <Text style={styles.outlineBtnText}>Start Quiz</Text>
-    </TouchableOpacity>
-  );
-}
-
-function TextButton({ children, onPress, style = {} }) {
-  return (
-    <TouchableOpacity onPress={onPress}>
-      <Text style={[styles.reset, style]}>{children}</Text>
-    </TouchableOpacity>
-  );
-}
+// imports colors utils
+import { white, gray } from "../utils/colors";
 
 class Deck extends Component {
-  addCard = () => {
-    const { deck } = this.props;
-
-    this.props.navigation.dispatch(
-      CommonActions.navigate({
-        name: "AddCard",
-        params: {
-          id: deck.id,
-        },
-      })
-    );
-  };
-
-  startQuiz = () => {
-    console.log("quiz will start soon");
-  };
-
-  deleteDeck = () => {
-    const { deck, toHome } = this.props;
-
-    dispatch(removeDeck(deck.id));
-    toHome();
-    removeDeckEntry(deck.id);
-  };
-
   render() {
-    const { deck } = this.props;
+    const { deck, style } = this.props;
+
+    if (deck === undefined) {
+      return <View style={styles.deckContainer}></View>;
+    }
     return (
-      <View style={styles.container}>
+      <View style={[styles.card, style]}>
         <Text style={styles.title}>{deck.title}</Text>
-        <Text style={styles.text}>{deck.cards.length} cards</Text>
-        <FillButton onPress={this.addCard} />
-        <OutlineButton onPress={this.startQuiz} />
-        <TextButton onPress={this.deleteDeck}>Delete Deck</TextButton>
+        {deck.cards && (
+          <Text style={styles.cards}>{deck.cards.length} cards</Text>
+        )}
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  deckContainer: {
     alignItems: "center",
-    marginTop: 70,
-  },
-  title: {
-    fontSize: 32,
+    justifyContent: "center",
+    flexBasis: 120,
+    minHeight: 120,
+    borderWidth: 1,
+    borderColor: "#aaa",
+    backgroundColor: white,
+    borderRadius: 5,
     marginBottom: 10,
   },
-  text: {
-    marginBottom: 60,
-    fontSize: 20,
+  card: {
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
+    borderBottomColor: "#cfd3ce",
+  },
+  cards: {
+    fontSize: 16,
     color: gray,
   },
-  fillButton: {
-    backgroundColor: darkOrange,
-    padding: 10,
-    paddingLeft: 60,
-    paddingRight: 60,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: darkOrange,
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "center",
-    marginBottom: 20,
-  },
-  fillBtnText: {
-    color: white,
-    fontSize: 24,
-  },
-  outlineButton: {
-    backgroundColor: white,
-    padding: 10,
-    paddingLeft: 60,
-    paddingRight: 60,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: darkOrange,
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "center",
-  },
-  outlineBtnText: {
-    color: darkOrange,
-    fontSize: 24,
-  },
-  textBtn: {
-    textAlign: "center",
-    color: purple,
+  title: {
+    fontSize: 22,
+    marginBottom: 5,
   },
 });
 
-function mapStateToProps(decks, { route }) {
-  const deck = decks.find(({ id }) => id === route.params.id);
+/**
+ * Fetching all decks from store to retrieve the deck needed for component
+ * @param {object} decks - all decks from store
+ * @param {string} deckId - individual deck id
+ */
+const mapStateToProps = (decks, { deckId, deckProp }) => {
+  const deck = deckId ? decks[deckId] : deckProp;
   return {
-    decks,
     deck,
   };
-}
+};
 
-function mapDispatchToProps(dispatch, { navigation }) {
-  return {
-    toHome: () => navigation.navigate("Decks"),
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Deck);
+export default connect(mapStateToProps)(Deck);

@@ -1,26 +1,15 @@
-import { CommonActions } from "@react-navigation/native";
+// imports ackages and dependencies
 import React, { Component } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { connect } from "react-redux";
-import { addCard } from "../actions";
-import { addCardEntry } from "../utils/api";
-import { mudBrown, white } from "../utils/colors";
 
-function SubmitBtn({ onPress }) {
-  return (
-    <View>
-      <TouchableOpacity
-        onPress={onPress}
-        style={
-          Platform.OS === "ios" ? styles.iosSubmitBtn : styles.androidSubmitBtn
-        }
-      >
-        <Text style={styles.submitBtnText}>SUBMIT</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
+// Imports UI component
+import FillButton from "./UIComponents/FillBtn";
+
+// Imports utils
+import { white } from "../utils/colors";
+import { handleAddCard } from "../actions";
 
 class NewCard extends Component {
   state = {
@@ -29,9 +18,9 @@ class NewCard extends Component {
   };
 
   /**
-   * @description - set/change multiple inputs
-   * @param {string} text - input field value
-   * @param {string} inputName - state's prop whose value will change
+   * to change respective input's value to state
+   * @param {string} text - user input value
+   * @param {string} inputName - user input values' label
    */
   handleChange = (text, inputName) => {
     this.setState(() => ({
@@ -39,18 +28,20 @@ class NewCard extends Component {
     }));
   };
 
+  // handles submission of inputs
   onSubmit = () => {
     const { question, answer } = this.state;
-    const { dispatch } = this.props;
-    const { id } = this.props.route.params;
-
+    const { dispatch, navigation, deck } = this.props;
     const card = { questionText: question, answerText: answer };
 
-    dispatch(addCard(id, card));
-    this.props.navigation.dispatch(CommonActions.goBack());
-    addCardEntry(id, card);
-  };
+    // dispatch action to add a card to deck async
+    dispatch(handleAddCard(deck.id, card));
 
+    //  and navigate back to current deck details
+    navigation.navigate("Deck details", {
+      deckProp: { ...deck, cards: [...deck.cards].concat([card]) },
+    });
+  };
   render() {
     const { question, answer } = this.state;
     return (
@@ -65,7 +56,9 @@ class NewCard extends Component {
           value={answer}
           style={styles.textInput}
         />
-        <SubmitBtn onPress={this.onSubmit} />
+        <FillButton style={styles.submitBtn} onPress={this.onSubmit}>
+          SUBMIT
+        </FillButton>
       </View>
     );
   }
@@ -74,34 +67,9 @@ class NewCard extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 20,
     padding: 20,
-    // justifyContent: "center", // vertically center with default behaviour
     alignItems: "center",
-    marginTop: 50,
-  },
-  iosSubmitBtn: {
-    backgroundColor: mudBrown,
-    padding: 10,
-    borderRadius: 7,
-    height: 45,
-    marginLeft: 40,
-    marginRight: 40,
-  },
-  androidSubmitBtn: {
-    backgroundColor: mudBrown,
-    padding: 10,
-    paddingLeft: 30,
-    paddingRight: 30,
-    borderRadius: 2,
-    height: 45,
-    // alignSelf: "center",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  submitBtnText: {
-    color: white,
-    fontSize: 22,
-    textAlign: "center",
   },
   textInput: {
     height: 40,
@@ -110,6 +78,17 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     marginBottom: 20,
   },
+  submitBtn: {
+    color: white,
+    fontSize: 20,
+  },
 });
 
-export default connect()(NewCard);
+const mapStateToProps = (decks, { route }) => {
+  const deck = decks[route.params.id];
+  return {
+    deck,
+  };
+};
+
+export default connect(mapStateToProps)(NewCard);
