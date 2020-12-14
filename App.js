@@ -1,25 +1,25 @@
 import React from "react";
 import { StatusBar, View } from "react-native";
 
-// navigation imports
-import { NavigationContainer } from "@react-navigation/native";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { createStackNavigator } from "@react-navigation/stack";
-
 import { applyMiddleware, createStore } from "redux";
 import thunk from "redux-thunk";
 import { Provider } from "react-redux";
 import reducer from "./reducers";
+
+// navigation imports
+import { NavigationContainer } from "@react-navigation/native";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 
 // imports component
 import DeckList from "./components/DeckList";
 import DeckDetails from "./components/DeckDetails";
 import NewDeck from "./components/NewDeck";
 import NewCard from "./components/NewCard";
+import Quiz from "./components/Quiz";
 
 // imports utils
 import {
-  teal,
   bgTabBar,
   gray,
   tabBorderColor,
@@ -80,8 +80,8 @@ export default function App() {
               }}
             />
             <Stack.Screen name="Add Card" component={NewCard} />
-            {/* <Stack.Screen name="Quiz" component={Quiz} />
-            <Stack.Screen
+            <Stack.Screen name="Quiz" component={Quiz} />
+            {/* <Stack.Screen
               name="AnswerCard"
               component={ansCard}
               options={{ headerShown: false }}

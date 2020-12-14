@@ -27,6 +27,12 @@ class DeckDetails extends Component {
     navigation.navigate("Add Card", { id: deck.id });
   };
 
+  // navigate to "Quiz" screen to take a test
+  onStartQuiz = () => {
+    const { navigation, deck } = this.props;
+    navigation.navigate("Quiz", { id: deck.id });
+  };
+
   // to delete the current deck
   deleteDeck = () => {
     const { dispatch, navigation, route } = this.props;
@@ -49,7 +55,9 @@ class DeckDetails extends Component {
           <FillButton style={styles.addCardBtn} onPress={this.addCard}>
             Add card
           </FillButton>
-          <OutlineButton style={styles.startQuizBtn}>Start Quiz</OutlineButton>
+          <OutlineButton style={styles.startQuizBtn} onPress={this.onStartQuiz}>
+            Start Quiz
+          </OutlineButton>
           <TextButton style={styles.textBtn} onPress={this.deleteDeck}>
             Delete Deck
           </TextButton>
