@@ -17,6 +17,7 @@ import DeckDetails from "./components/DeckDetails";
 import NewDeck from "./components/NewDeck";
 import NewCard from "./components/NewCard";
 import Quiz from "./components/Quiz";
+import ansCard from "./components/answerCard";
 
 // imports utils
 import {
@@ -81,11 +82,11 @@ export default function App() {
             />
             <Stack.Screen name="Add Card" component={NewCard} />
             <Stack.Screen name="Quiz" component={Quiz} />
-            {/* <Stack.Screen
+            <Stack.Screen
               name="AnswerCard"
               component={ansCard}
               options={{ headerShown: false }}
-            />*/}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </View>
