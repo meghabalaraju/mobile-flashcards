@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { StatusBar, View } from "react-native";
 
 import { applyMiddleware, createStore } from "redux";
@@ -27,6 +27,7 @@ import {
   tabText,
   bgStatusBar,
 } from "./utils/colors";
+import { setLocalNotifications } from "./utils/notification";
 
 // Tab navigation for Decklists and NewDeck
 const Tab = createMaterialTopTabNavigator();
@@ -58,38 +59,44 @@ const Stack = createStackNavigator();
 // store creation
 const store = createStore(reducer, applyMiddleware(thunk));
 
-export default function App() {
-  return (
-    <Provider store={store}>
-      <View style={{ flex: 1 }}>
-        <StatusBar backgroundColor={bgStatusBar} barStyle="light-content" />
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen
-              name="Home"
-              component={TabNavs}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Deck details"
-              component={DeckDetails}
-              options={{
-                headerStyle: {
-                  backgroundColor: bgTabBar,
-                },
-                headerTintColor: "#045762",
-              }}
-            />
-            <Stack.Screen name="Add Card" component={NewCard} />
-            <Stack.Screen name="Quiz" component={Quiz} />
-            <Stack.Screen
-              name="AnswerCard"
-              component={ansCard}
-              options={{ headerShown: false }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </View>
-    </Provider>
-  );
+export default class App extends Component {
+  // set local notification
+  componentDidMount() {
+    setLocalNotifications;
+  }
+  render() {
+    return (
+      <Provider store={store}>
+        <View style={{ flex: 1 }}>
+          <StatusBar backgroundColor={bgStatusBar} barStyle="light-content" />
+          <NavigationContainer>
+            <Stack.Navigator>
+              <Stack.Screen
+                name="Home"
+                component={TabNavs}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Deck details"
+                component={DeckDetails}
+                options={{
+                  headerStyle: {
+                    backgroundColor: bgTabBar,
+                  },
+                  headerTintColor: "#045762",
+                }}
+              />
+              <Stack.Screen name="Add Card" component={NewCard} />
+              <Stack.Screen name="Quiz" component={Quiz} />
+              <Stack.Screen
+                name="AnswerCard"
+                component={ansCard}
+                options={{ headerShown: false }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </View>
+      </Provider>
+    );
+  }
 }
