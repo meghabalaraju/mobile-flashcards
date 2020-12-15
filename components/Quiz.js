@@ -35,6 +35,7 @@ class Quiz extends Component {
     const { index } = this.state;
     const newCard = cards[index];
 
+    // if there are no more questions left to show, update the state
     if (!newCard) {
       if (index === cards.length) {
         this.setState(() => ({
@@ -72,19 +73,15 @@ class Quiz extends Component {
     }
   };
 
+  // Redirect to "AnswerCard" view to show the answer for the current question
   showAnswer = () => {
     const { card } = this.state;
     this.props.navigation.navigate("AnswerCard", { ans: card.answerText });
   };
 
-  // redirect to home after quiz completion
-  toHome = () => {
-    this.props.navigation.navigate("Decks");
-  };
-
   render() {
     const { isComplete, index, score, card } = this.state;
-    const { cards } = this.props;
+    const { cards, navigation } = this.props;
     const scoreInPercent = Math.floor((score / cards.length) * 100);
 
     // Quiz completion - User score with a button to return to deck view
@@ -94,9 +91,9 @@ class Quiz extends Component {
           <Text style={styles.score}>You scored: {scoreInPercent}%</Text>
           <TextButton
             style={([styles.textBtn], { letterSpacing: 1, fontSize: 20 })}
-            onPress={this.toHome}
+            onPress={() => navigation.goBack()}
           >
-            Go home
+            Back to Deck
           </TextButton>
         </View>
       );
