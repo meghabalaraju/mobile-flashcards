@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Animated } from "react-native";
 import { connect } from "react-redux";
 
 // utils import
@@ -15,11 +15,26 @@ import TextButton from "./UIComponents/TextButton";
 import Deck from "./Deck";
 
 class DeckDetails extends Component {
+  state = {
+    scaleValue: new Animated.Value(0),
+  };
+
   // set header title to deck title
   componentDidMount() {
     const { navigation, deck } = this.props;
     navigation.setOptions({ title: deck.title });
+    this.scaleOut();
   }
+
+  // Transforms deck title, no. of cards
+  scaleOut = () => {
+    // Will change scaleValue value to 1 in 6ms
+    Animated.timing(this.state.scaleValue, {
+      toValue: 1,
+      duration: 600,
+      useNativeDriver: false,
+    }).start();
+  };
 
   // navigate to "Add Cards" screen to get user inputs
   addCard = () => {
@@ -49,7 +64,13 @@ class DeckDetails extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.details}>
-          <Deck deckProp={route.params.deckProp} />
+          <Animated.View
+            style={{
+              transform: [{ scale: this.state.scaleValue }], // Bind transform to animated value
+            }}
+          >
+            <Deck deckProp={route.params.deckProp} />
+          </Animated.View>
         </View>
         <View>
           <FillButton style={styles.addCardBtn} onPress={this.addCard}>
