@@ -19,7 +19,6 @@ async function setDummyData() {
     "6ni6ok3ym7mf1p33lnez": {
       id: "6ni6ok3ym7mf1p33lnez",
       title: "React Native deck",
-      totalCards: 3,
       cards: [
         {
           questionText: "Does React Native work with Android?",
@@ -38,7 +37,6 @@ async function setDummyData() {
     "8xf0y6ziyjabvozdd253nd": {
       id: "8xf0y6ziyjabvozdd253nd",
       title: "React deck",
-      totalCards: 0,
       cards: [],
     },
   };

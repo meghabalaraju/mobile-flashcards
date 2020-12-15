@@ -4,7 +4,9 @@
     "slug": "mobile-flashcards",
     "description": "The polar question flashcards app",
     "sdkVersion": "39.0.0",
-    "platforms": ["android"],
+    "platforms": [
+      "android"
+    ],
     "githubUrl": "https://github.com/meghabalaraju/mobile-flashcards",
     "notification": {
       "icon": "./assets/flashcards.png"
@@ -42,7 +44,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-
     "owner": "megha"
   }
 }
