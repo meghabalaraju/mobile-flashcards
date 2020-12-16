@@ -54,9 +54,10 @@ Users can create a new deck. After the creation user will be taken to deck detai
     - User can add new card (question) to deck with help of "Add deck" button in the details view, which will take user to add deck view to take input from user for [polar          question](https://www.yourdictionary.com/polar-question).
     - User can take quiz in the deck details by pressing on the "Start quiz" button in the view which take user to quiz view
      - user can take a quiz themselves by going into quiz view with help of "Start quiz" button in the deck details view
-
+    - user can delete the deck
 - Quiz view
-    - user can answer any question with two possibilities correct or incorrect, If there are no cards in the deck it will show you a message
-    - user can the delee deck
+    - Question will be shown along with two options in the form of buttons for user to answer for the question. 
+     -As well an answer button to pause the quiz an take a look at the answer for the current question
+     - On quiz completion score will be shown to user which will be a percentage 
 
 - User receives a notification if he has not taken quiz for the day.
