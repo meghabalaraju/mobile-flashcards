@@ -1,10 +1,8 @@
-### Getting started
-
-#### Description
+## Getting started
 
 Mobile Flashcards is a React Native app that allows users to create decks, add cards, and quiz themselves. The app is built for the Android platform only.
 
-#### Requirements
+### Requirements
 
 This app is using Expo CLI. Assuming that you have [Node 12 LTS](https://nodejs.org/en/download/) or greater installed, you can use <code> npm </code> &ensp; or &ensp; <code> yarn </code> &ensp;to install the Expo CLI command line utility:
 
@@ -14,7 +12,7 @@ This app is using Expo CLI. Assuming that you have [Node 12 LTS](https://nodejs.
 
 Learn about building and deploying universal apps with [Expo](https://docs.expo.io/)
 
-#### Installation
+### Installation
 
 Clone the repository
 
@@ -32,33 +30,33 @@ To run this project in your local machine
 
 ### Demo
 
-Remeber to install "Expo" app from [Android](https://play.google.com/store/apps/details?id=host.exp.exponent&referrer=www)
+Remeber to install "Expo" app from [Google play store](https://play.google.com/store/apps/details?id=host.exp.exponent&referrer=www)
 
 Access [project page](https://expo.io/@superuser_1/mobile-flashcards) and scan the QR code
 
-Here is a screen shot how project page looks like
+<img src="assets/projectpage.PNG" width="800" height="400">
 
-<img src="assets/projectpage.PNG", alt="screenshot of project page" style="float: left; margin-right: 10px;" />
+Here you can see how the UI looks like for each functionality
+
+<img src="assets/decklist.jpg" width="200" height="350"> &ensp; <img src="assets/createdeck.jpg" width="200" height="350"> &ensp; <img src="assets/deckview.png" width="200" height="350"> &ensp; <img src="assets/quiz.jpg" width="200" height="350">
 
 ## Functionalities
 
-Here you can see how the UIlokks like for each functionality
+This app mainly has five view
+- DeckList view
+User can see all the decks list initialy. If there are no decks, view will be different.
 
-User can see all the decks list initialy if there are no decks view will be different
+- Create or Add deck view
+Users can create a new deck. After the creation user will be taken to deck details view
 
-<img src="assets/decklist.jpg", alt="screenshot of project page" style="float: left; margin-right: 10px;" />
+- Deck details view
+    - It contains deck title and how many cards are in that deck. 
+    - User can add new card (question) to deck with help of "Add deck" button in the details view, which will take user to add deck view to take input from user for [polar          question](https://www.yourdictionary.com/polar-question).
+    - User can take quiz in the deck details by pressing on the "Start quiz" button in the view which take user to quiz view
+     - user can take a quiz themselves by going into quiz view with help of "Start quiz" button in the deck details view
 
-Users can create a new deck
+- Quiz view
+    - user can answer any question with two possibilities correct or incorrect, If there are no cards in the deck it will show you a message
+    - user can the delee deck
 
-<img src="assets/createdeck.jpg", alt="screenshot of project page" style="float: left; margin-right: 10px;" />
-
-Add new card to deck
-
-<img src="assets/deckview.jpg", alt="screenshot of project page" style="float: left; margin-right: 10px;" />
-
-(add screenshot of )
-
-Take quiz for themselves
-<img src="assets/quiz.jpg", alt="screenshot of project page" style="float: left; margin-right: 10px;" />
-
-User receives a notification if he has not taken quiz for the day.
+- User receives a notification if he has not taken quiz for the day.
