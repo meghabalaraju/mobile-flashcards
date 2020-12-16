@@ -45,9 +45,7 @@ class Quiz extends Component {
         this.setState(() => ({
           isComplete: true,
         }));
-      }
-
-      if (isComplete) {
+      } else if (!isComplete) {
         clearNotifications().then(setLocalNotifications);
       }
     }
@@ -64,16 +62,11 @@ class Quiz extends Component {
   };
 
   // reset state to initial state and go back to deck details screen
-  resetSate = () => {
+  toHome = () => {
     // redirect to deck details
-    this.props.navigation.goBack();
-
-    // reset to initial state
-    this.setState(() => ({
-      card: {},
-      index: 0,
-      score: 0,
-    }));
+    this.props.navigation.navigate("Deck details", {
+      id: this.props.route.params.id,
+    });
   };
 
   // calculate the qiuz score
@@ -102,17 +95,17 @@ class Quiz extends Component {
 
   render() {
     const { isComplete, index, score, card } = this.state;
-    const { cards, navigation } = this.props;
+    const { cards } = this.props;
     const scoreInPercent = Math.floor((score / cards.length) * 100);
 
     // Quiz completion - User score with a button to return to deck view
-    if (isComplete) {
+    if (cards.length !== 0 && isComplete) {
       return (
         <View>
           <Text style={styles.score}>You scored: {scoreInPercent}%</Text>
           <TextButton
             style={([styles.textBtn], { letterSpacing: 1, fontSize: 20 })}
-            onPress={this.resetSate}
+            onPress={this.toHome}
           >
             Back to Deck
           </TextButton>
@@ -122,7 +115,7 @@ class Quiz extends Component {
 
     return (
       <View>
-        {cards && cards.length > 0 ? (
+        {cards.length > 0 ? (
           <View>
             <Text style={styles.remainCards}>
               {index}/{cards.length}

@@ -4,6 +4,8 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
+  View,
+  Text,
 } from "react-native";
 import { connect } from "react-redux";
 
@@ -41,6 +43,22 @@ class DeckList extends Component {
       return <AppLoading />;
     }
 
+    if (decksKeys.length === 0) {
+      return (
+        <View style={{ flex: 1 }}>
+          <Text
+            style={{
+              textAlignVertical: "center",
+              textAlign: "center",
+              padding: 40,
+              fontSize: 20,
+            }}
+          >
+            Oops! there are no decks. Clik on Add decks to carete one.
+          </Text>
+        </View>
+      );
+    }
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView>
